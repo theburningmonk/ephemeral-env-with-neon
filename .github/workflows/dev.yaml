@@ -32,7 +32,7 @@ jobs:
 
       - name: create Neon branch
         id: create-branch
-        use: neondatabase/create-branch-action@v6
+        uses: neondatabase/create-branch-action@v6
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           api_key: ${{ secrets.NEON_API_KEY }}
@@ -56,7 +56,7 @@ jobs:
         env:
           DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
       - name: delete Neon branch
-        use: neondatabase/delete-branch-action@v6
+        uses: neondatabase/delete-branch-action@v6
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           api_key: ${{ secrets.NEON_API_KEY }}
