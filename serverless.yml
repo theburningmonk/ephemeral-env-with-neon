@@ -1,0 +1,51 @@
+service: todo-api
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: us-east-1
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+
+functions:
+  createTodo:
+    handler: functions/createTodo.handler
+    events:
+      - http:
+          path: /todos
+          method: post
+          cors: true
+
+  getTodos:
+    handler: functions/getTodos.handler
+    events:
+      - http:
+          path: /todos
+          method: get
+          cors: true
+
+  getTodo:
+    handler: functions/getTodo.handler
+    events:
+      - http:
+          path: /todos/{id}
+          method: get
+          cors: true
+
+  updateTodo:
+    handler: functions/updateTodo.handler
+    events:
+      - http:
+          path: /todos/{id}
+          method: put
+          cors: true
+
+  deleteTodo:
+    handler: functions/deleteTodo.handler
+    events:
+      - http:
+          path: /todos/{id}
+          method: delete
+          cors: true

@@ -1,0 +1,6 @@
+{
+  "pathParameters": {
+    "id": "0ee59f19-0b01-4ceb-81be-01ff074e33ca"
+  },
+  "body": "{\"completed\": true, \"title\": \"Buy groceries\", \"description\": \"Buy groceries for the week\"}"
+}
