@@ -39,7 +39,7 @@ jobs:
           # name of the parent branch
           parent_branch: development
           # name of the new branch
-          branch_name: GH_${{ github.sha }}
+          branch_name: GH_Actions_temp
 
       - name: npm ci
         run: npm ci
@@ -61,4 +61,4 @@ jobs:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           api_key: ${{ secrets.NEON_API_KEY }}
           # name of the new branch
-          branch_name: GH_${{ github.sha }}
+          branch_name: GH_Actions_temp
