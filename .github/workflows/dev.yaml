@@ -27,7 +27,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: <IAM ROLE ARN>
+          role-to-assume: arn:aws:iam::374852340823:role/GitHubActionsRole
           role-session-name: GithubActionsSession
 
       - name: create Neon branch
