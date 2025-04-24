@@ -32,14 +32,14 @@ jobs:
 
       - name: create Neon branch
         id: create-branch
-        uses: neondatabase/create-branch-action@v6.0.1
+        uses: neondatabase/create-branch-action@v6
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           api_key: ${{ secrets.NEON_API_KEY }}
           # name of the parent branch
           parent_branch: development
           # name of the new branch
-          branch_name: GH_Actions_temp
+          branch_name: gh-${{ github.sha }}
 
       - name: npm ci
         run: npm ci
@@ -61,4 +61,4 @@ jobs:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           api_key: ${{ secrets.NEON_API_KEY }}
           # name of the new branch
-          branch_name: GH_Actions_temp
+          branch_name: gh-${{ github.sha }}
