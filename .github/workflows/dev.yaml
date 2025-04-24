@@ -37,7 +37,7 @@ jobs:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           api_key: ${{ secrets.NEON_API_KEY }}
           # name of the parent branch
-          parent: development
+          parent_branch: development
           # name of the new branch
           branch_name: GH_${{ github.sha }}
 
