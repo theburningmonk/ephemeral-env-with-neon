@@ -1,0 +1,64 @@
+name: deploy dev
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    # this prevents concurrent builds
+    concurrency: dev-environment
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # this is required for authenticating to AWS via the OIDC Provider we set up
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: <IAM ROLE ARN>
+          role-session-name: GithubActionsSession
+
+      - name: create Neon branch
+        id: create-branch
+        use: neondatabase/create-branch-action@v6
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          # name of the parent branch
+          parent: development
+          # name of the new branch
+          branch_name: GH_${{ github.sha }}
+
+      - name: npm ci
+        run: npm ci
+      - name: deploy to ephemeral environment
+        run: npx sls deploy --stage gh-${{ github.sha }}
+        env:
+          DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
+
+      - name: run tests
+        run: npm run test
+
+      - name: delete ephemeral environment
+        run: npx sls remove --stage gh-${{ github.sha }}
+        env:
+          DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
+      - name: delete Neon branch
+        use: neondatabase/delete-branch-action@v6
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          # name of the new branch
+          branch_name: GH_${{ github.sha }}
