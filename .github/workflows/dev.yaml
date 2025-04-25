@@ -40,6 +40,7 @@ jobs:
           parent: development
           # name of the new branch
           branch_name: gh-${{ github.sha }}
+          database: todos
 
       - name: npm ci
         run: npm ci
