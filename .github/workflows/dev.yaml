@@ -41,6 +41,7 @@ jobs:
           # name of the new branch
           branch_name: gh-${{ github.sha }}
           database: todos
+          role: todos_owner
 
       - name: npm ci
         run: npm ci
