@@ -42,6 +42,8 @@ jobs:
           branch_name: gh-${{ github.sha }}
           database: todos
 
+      - run: echo ${{ steps.create-branch.outputs.db_url }}
+
       - name: npm ci
         run: npm ci
 
@@ -49,6 +51,7 @@ jobs:
         run: npx sls deploy --stage gh-${{ github.sha }}
         env:
           DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
 
       - name: run tests
         run: npm run test
