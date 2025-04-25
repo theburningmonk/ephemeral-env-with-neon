@@ -48,7 +48,8 @@ jobs:
         run: npm ci
 
       - name: deploy to ephemeral environment
-        run: npx sls deploy --stage gh-${{ github.sha }}
+        id: deploy-sls
+        run: npx sls deploy --stage dev-gh-actions
         env:
           DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
           SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
@@ -57,10 +58,13 @@ jobs:
         run: npm run test
 
       - name: delete ephemeral environment
-        run: npx sls remove --stage gh-${{ github.sha }}
+        if: ${{ always() && steps.deploy-sls.outcome == 'success' }}
+        run: npx sls remove --stage dev-gh-actions
         env:
           DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
+
       - name: delete Neon branch
+        if: ${{ always() && steps.create-branch.outcome == 'success' }}
         uses: neondatabase/delete-branch-action@v3
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
