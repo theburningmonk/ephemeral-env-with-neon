@@ -61,6 +61,7 @@ jobs:
         if: ${{ always() && steps.deploy-sls.outcome == 'success' }}
         run: npx serverless remove --stage dev-gh-actions
         env:
+          DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
           SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
 
       - name: delete Neon branch
