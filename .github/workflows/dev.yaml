@@ -43,6 +43,9 @@ jobs:
 
       - name: npm ci
         run: npm ci
+        needs: 
+          - create-branch
+
       - name: deploy to ephemeral environment
         run: npx sls deploy --stage gh-${{ github.sha }}
         env:
