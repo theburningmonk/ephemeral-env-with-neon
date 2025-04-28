@@ -1,25 +1,27 @@
 import { describe, it, expect } from 'vitest';
-import { handler } from '../../functions/createTodo.js';
 import { getTodo } from '../../lib/todos.js';
 import { Chance } from 'chance';
 const chance = new Chance();
 
-describe('createTodo Handler', () => {
+describe('createTodo API', () => {
   it('should create a new todo in the database', async () => {
     const title = chance.sentence();
     const description = chance.paragraph();
 
-    const event = {
+    const response = await fetch(`${process.env.API_URL}/todos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         title,
         description
       })
-    };
+    });
 
-    const response = await handler(event);
-    const todo = JSON.parse(response.body);
+    const todo = await response.json();
 
-    expect(response.statusCode).toBe(201);
+    expect(response.status).toBe(201);
     expect(todo).toHaveProperty('id');
     expect(todo.title).toBe(title);
     expect(todo.description).toBe(description);
@@ -33,13 +35,16 @@ describe('createTodo Handler', () => {
   });
 
   it('should return 400 if title is missing', async () => {
-    const event = {
+    const response = await fetch(`${process.env.API_URL}/todos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         description: chance.paragraph()
       })
-    };
+    });
 
-    const response = await handler(event);
-    expect(response.statusCode).toBe(400);
+    expect(response.status).toBe(400);
   });
 }); 

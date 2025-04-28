@@ -6,7 +6,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:e2e": "vitest run tests/e2e",
+    "test:all": "vitest",
     "test:coverage": "vitest run --coverage",
     "deploy": "serverless deploy"
   },

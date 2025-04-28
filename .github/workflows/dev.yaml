@@ -46,6 +46,11 @@ jobs:
       - name: npm ci
         run: npm ci
 
+      - name: run unit tests
+        run: npm run test:unit
+        env:
+          DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
+
       - name: deploy to ephemeral environment
         id: deploy-sls
         run: npx serverless deploy --stage dev-gh-actions
@@ -53,8 +58,8 @@ jobs:
           DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
           SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
 
-      - name: run tests
-        run: npm run test
+      - name: run e2e tests
+        run: npm run test:e2e
         env:
           DATABASE_URL: ${{ steps.create-branch.outputs.db_url }}
 
@@ -73,3 +78,9 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
           # name of the new branch
           branch: gh-${{ github.sha }}
+
+      - name: deploy to dev
+        run: npx serverless deploy
+        env:
+          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}

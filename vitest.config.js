@@ -1,5 +1,6 @@
 export default {
   test: {
+    fileParallelism: false,
     globals: true,
     environment: 'node',
     include: ['tests/**/*.test.js'],
