@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { createApiClient } = require('@neondatabase/api-client');
+const { createApiClient, EndpointType } = require('@neondatabase/api-client');
 
 // Check if required environment variables are set
 if (!process.env.NEON_API_KEY) {
@@ -47,13 +47,30 @@ async function createBranch() {
       branch: {
         name: newBranchName,
         parent_id: parentBranch.id
-      }
+      },
+      endpoints: [
+        {
+          type: EndpointType.ReadWrite,
+          autoscaling_limit_min_cu: 0.25,
+          autoscaling_limit_max_cu: 1,
+        },
+      ],
     });
 
     console.log('Branch created successfully!');
     console.log('Branch details:', response.data.branch);
+
+    console.log('Getting connection URL...');
+    const getUrlResponse = await neon.getConnectionUri({ 
+      projectId: process.env.NEON_PROJECT_ID,
+      branch_id: response.data.branch.id,
+      database_name: 'todos', // change this to the database name you want to connect to
+      role_name: 'todos_owner', // change this to the role name you want to connect with
+    });
+
+    console.log('Connection URL:', getUrlResponse.data.uri);
   } catch (error) {
-    console.error('Error creating branch:', error.message);
+    console.error('Error creating branch:', error.message, error);
     process.exit(1);
   }
 }
