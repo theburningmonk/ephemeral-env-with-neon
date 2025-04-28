@@ -8,7 +8,7 @@ describe('createTodo API', () => {
     const title = chance.sentence();
     const description = chance.paragraph();
 
-    const response = await fetch(`${process.env.API_URL}/todos`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ describe('createTodo API', () => {
   });
 
   it('should return 400 if title is missing', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

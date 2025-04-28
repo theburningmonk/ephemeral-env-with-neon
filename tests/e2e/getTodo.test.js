@@ -14,7 +14,7 @@ describe('getTodo API', () => {
   });
 
   it('should retrieve a todo by id', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${id}`);
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${id}`);
     const todo = await response.json();
 
     expect(response.status).toBe(200);
@@ -25,7 +25,7 @@ describe('getTodo API', () => {
   });
 
   it('should return 404 for non-existent todo', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${chance.guid()}`);
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${chance.guid()}`);
     expect(response.status).toBe(404);
   });
 }); 

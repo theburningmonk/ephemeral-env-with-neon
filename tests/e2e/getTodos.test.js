@@ -14,7 +14,7 @@ describe('getTodos API', () => {
   });
 
   it('should retrieve all todos', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos`);
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos`);
     const todos = await response.json();
 
     expect(response.status).toBe(200);
@@ -36,7 +36,7 @@ describe('getTodos API', () => {
   it('should return empty array when no todos exist', async () => {
     await sql`DELETE FROM todos`;
 
-    const response = await fetch(`${process.env.API_URL}/todos`);
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos`);
     const todos = await response.json();
 
     expect(response.status).toBe(200);

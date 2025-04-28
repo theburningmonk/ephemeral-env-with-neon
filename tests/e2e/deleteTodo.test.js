@@ -12,7 +12,7 @@ describe('deleteTodo API', () => {
   });
 
   it('should delete a todo from the database', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${id}`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${id}`, {
       method: 'DELETE'
     });
 
@@ -23,7 +23,7 @@ describe('deleteTodo API', () => {
   });
 
   it('should return 404 for non-existent todo', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${chance.guid()}`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${chance.guid()}`, {
       method: 'DELETE'
     });
 

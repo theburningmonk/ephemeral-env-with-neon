@@ -12,7 +12,7 @@ describe('updateTodo API', () => {
   });
 
   it('should update a todo in the database', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${id}`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ describe('updateTodo API', () => {
   it('should update only specified fields', async () => {
     const oldTodo = await getTodo(id);
 
-    const response = await fetch(`${process.env.API_URL}/todos/${id}`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ describe('updateTodo API', () => {
   });
 
   it('should return 404 for non-existent todo', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${chance.guid()}`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${chance.guid()}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ describe('updateTodo API', () => {
   });
 
   it('should handle invalid JSON in request body', async () => {
-    const response = await fetch(`${process.env.API_URL}/todos/${chance.guid()}`, {
+    const response = await fetch(`${process.env.ServiceEndpoint}/todos/${chance.guid()}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

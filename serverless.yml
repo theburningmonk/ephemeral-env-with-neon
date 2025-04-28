@@ -49,3 +49,13 @@ functions:
           path: /todos/{id}
           method: delete
           cors: true
+
+plugins:
+  - serverless-export-outputs
+
+custom:
+  exportOutputs:
+    include:
+      - ServiceEndpoint
+    output:
+      file: ./.env
